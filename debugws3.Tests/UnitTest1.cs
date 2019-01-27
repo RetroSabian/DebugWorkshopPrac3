@@ -52,5 +52,60 @@ namespace Tests
       var result = Calc.Calculate(value);
       Assert.IsTrue(result.result == 1, $"{value} should be 1");
     }
+
+    [DataTestMethod]
+    [DataRow(" 4*9")]
+    [DataRow("3* 12")]
+    [DataRow(" 2 * 18 ")]
+    [DataRow("1*     36")]
+    [DataRow("    6*6")]
+    public void DoMultiply(string value)
+    {
+      var result = Calc.Calculate(value);
+      Assert.IsTrue(result.result == 36, $"{value} should be 36");
+    }
+
+    [DataTestMethod]
+    [DataRow(" 18/9")]
+    [DataRow("24/ 12")]
+    [DataRow(" 30 / 15 ")]
+    [DataRow("72/     36")]
+    [DataRow("    36/18")]
+    public void DoDivide(string value)
+    {
+      var result = Calc.Calculate(value);
+      Assert.IsTrue(result.result == 2, $"{value} should be 2");
+    }
+
+    [DataTestMethod]
+    [DataRow(" 18/9 +3 ")]
+    [DataRow("1 * 7 - 2")]
+    public void DoInOrder(string value)
+    {
+      var result = Calc.Calculate(value);
+      Assert.IsTrue(result.result == 5, $"{value} should be 5");
+    }
+
+    [DataTestMethod]
+    [DataRow(" 3 + 4  * 2 ")]
+    [DataRow("23 -  24/2")]
+    public void DoNotOrder(string value)
+    {
+      var result = Calc.Calculate(value);
+      Assert.IsTrue(result.result == 11, $"{value} should be 11");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
   }
+
 }

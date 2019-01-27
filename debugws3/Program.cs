@@ -79,15 +79,41 @@ namespace debugws3
       int[] numbersToBeCalculated = Array.ConvertAll(numArray, int.Parse);
       char[] operations = Array.ConvertAll(opArray, char.Parse);
 
+
       //Checking if math operators are equal or more than the numbers to be calculated
       if (operations.Length >= numbersToBeCalculated.Length)
       {
         return new Result(0, "Wrong entry. Try again using one or more operations");
       }
 
-      double result = numbersToBeCalculated[0];
+      for(var i = 0; i < operations.Length; i++)
+      {
+        switch(operations[i]){
+          case '*':
+          {
+            char op = RemoveOperand(ref operations, i);
+            int num = RemoveNum(ref numbersToBeCalculated, i);
+            PerformOperation(ref numbersToBeCalculated, num, i, op);   
+          break;
+          }
+          case '/':
+          {
+            char op = RemoveOperand(ref operations, i);
+            int num = RemoveNum(ref numbersToBeCalculated, i);
+            PerformOperation(ref numbersToBeCalculated, num, i, op);
+            break;
+          }
+          default:{
+            break;
+          }
+        }
+      }
+
+     
+      
 
       var j = 0;
+      double result = numbersToBeCalculated[0];
       for (var i = 1; i < numbersToBeCalculated.Length; i++)
       {
         switch (operations[j])
@@ -102,7 +128,7 @@ namespace debugws3
               result -= numbersToBeCalculated[i];
               break;
             }
-          case '*':
+             case '*':
             {
               result *= numbersToBeCalculated[i];
               break;
@@ -117,9 +143,53 @@ namespace debugws3
         }
         j++;
       }
-
       return new Result(result, "");
     }
+
+    public static char RemoveOperand( ref char[] arr, int i){
+      char ch = arr[i];
+      char[] temp = new char [arr.Length-1];
+      for(int a=0; a<temp.Length; a++)
+      {
+          if(a < i)
+          {
+            temp[a] = arr[a];
+          }
+          else{
+            temp[a]=arr[a+1];
+          }
+      }
+      arr = temp;
+      return ch;
+    }
+
+    public static void PerformOperation(ref int[] arr, int num, int i, char op){
+      if(op == '*')
+      {
+        arr[i] = num * arr[i] ;
+      }
+      else{
+        arr[i] = num / arr[i] ;
+      }
+    }
+
+    public static int RemoveNum( ref int[] arr, int i){
+      int num = arr[i];
+      int[] temp = new int [arr.Length-1];
+      for(int a=0; a<temp.Length; a++)
+      {
+          if(a < i)
+          {
+            temp[a] = arr[a];
+          }
+          else{
+            temp[a]=arr[a+1];
+          }
+      }
+      arr = temp;
+      return num;
+    }
+
 
     public static void ExitAndThankYouMessage()
     {
